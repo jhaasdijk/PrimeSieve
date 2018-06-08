@@ -15,10 +15,10 @@ public class Writer implements Runnable {
 
     @Override
     public void run() {
-        int element = 2;
+        int element = 3;
         while (true) {
             output.put(element);
-            element++;
+            element += 2;
         }
     }
 

@@ -30,35 +30,16 @@ public class Sieve implements Runnable {
 
     @Override
     public void run() {
-        boolean hasSuccessor = false;
+        Buffer out = new Buffer(BUFFSIZE);
+        Sieve next = new Sieve(count + 1, limit, (int) predecessor.get(), successor, out);
+        Thread thread = new Thread(next);
+        thread.start();
+
         while (true) {
             int element = (int) predecessor.get();
-
-            if (!hasSuccessor) {
-                if (element % prime != 0) {
-                    /*
-                    The next sieve has not yet been created
-                    We have found the next prime
-                    -> Create the next sieve and start its thread
-                     */
-
-                    hasSuccessor = true;
-                    Buffer out = new Buffer(BUFFSIZE);
-                    Sieve next = new Sieve(count + 1, limit, element, successor, out);
-                    Thread thread = new Thread(next);
-                    thread.start();
-                }
-            } else {
-                /*
-                The next sieve has been created
-                -> Put the unfiltered numbers into the next buffer
-                 */
-
-                if (element % prime != 0) {
-                    successor.put(element);
-                }
+            if (element % prime != 0) {
+                successor.put(element);
             }
         }
     }
-
 }
