@@ -8,22 +8,21 @@ package generator;
 public class Main {
 
     private static final int BUFFSIZE = 10;
+    private static final int LIMIT = 1000;
 
     public static void main(String[] args) {
-        System.out.println(System.currentTimeMillis()); // start time
+        System.out.println("start: " + System.currentTimeMillis());
 
         Buffer inBuffer = new Buffer(BUFFSIZE);
         Writer inWriter = new Writer(inBuffer);
 
         Buffer outBuffer = new Buffer(BUFFSIZE);
-        Sieve two = new Sieve(1, 2, inBuffer, outBuffer);
+        Sieve two = new Sieve(1, LIMIT, 2, inBuffer, outBuffer);
 
         Thread writer = new Thread(inWriter);
         Thread sieve = new Thread(two);
         writer.start();
         sieve.start();
-
-        System.out.println(System.currentTimeMillis()); // stop time
     }
 
 }
